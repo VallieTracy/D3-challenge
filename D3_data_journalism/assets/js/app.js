@@ -28,7 +28,7 @@ function makeResponsive() {
     
     // Append group element
     var chartGroup = svg.append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     d3.csv("assets/data/data.csv").then(function(popData) {
         // Convert strings into numbers
@@ -69,7 +69,24 @@ function makeResponsive() {
             .attr("fill", "pink")
             .attr("opacity", ".5");
 
+        // Create axes labels
+        // X
+        chartGroup.append("text")
+            .attr("transform", `translate(${width / 2}, ${height + margin.top})`)
+            .attr("class", "aText")
+            .text("In Poverty (%)");
 
+        // Y
+        chartGroup.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", 0 - (height / 2))
+            .attr("y", 0 - margin.left + 40)
+            .text("Lacks Healthcare");
+
+        
+          
+        
+    
     }).catch(function(error) {
         console.log(error);
       });

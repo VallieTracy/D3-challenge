@@ -1,8 +1,20 @@
-    // Empty SVG area
-    // var svgArea = d3.select("body").select("svg");
-    // if (!svgArea.empty()) {
-    //     svgArea.remove();
-    // }
+// var width = parseInt(d3.select("#scatter").style("width"));
+// var height = width - width / 3.9;
+// var margin = 20;
+// var labelArea = 110;
+// var tPadBot = 40;
+// var tPadLeft = 40;
+
+// var svg = d3
+//     .select("#scatter")
+//     .append("svg")
+//     .attr("width", width)
+//     .attr("height", height)
+//     .attr("class", "chart")
+//     .style("background", "blue")
+  
+// var height = svgHeight - margin.top - margin.bottom;
+// var width = svgWidth - margin.left - margin.right;
 
     var svgWidth = 960;
     var svgHeight = 500;
@@ -109,7 +121,7 @@
             data.obesity = +data.obesity;
         });
     
-        // xLinearScale function above csv import
+        // xScale function above csv import
         var xLinearScale = xScale(popData, chosenXAxis);
     
         var yLinearScale = d3.scaleLinear()
@@ -125,6 +137,7 @@
             .classed("x-axis", true)
             .attr("transform", `translate(0, ${height})`)
             .call(bottomAxis);
+            console.log("xAxis:", xAxis);
     
         // Append y-axis 
         chartGroup.append("g")
@@ -173,13 +186,49 @@
             .text("Household Income (Median");
     
         // Append the y-axis
-        chartGroup.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left)
-                .attr("x", 0 - (height / 2))
-                .attr("dy", "1em")
-                .attr("class", "aText")
-                .text("Lacks Healthcare (%)");
+        // chartGroup.append("text")
+        //         .attr("transform", "rotate(-90)")
+        //         .attr("y", 0 - margin.left)
+        //         .attr("x", 0 - (height / 2))
+        //         .attr("dy", "1em")
+        //         .attr("class", "aText")
+        //         .text("Lacks Healthcare (%)");
+
+
+        var something = svg.append('g').attr('class','yText');
+        console.log("something:", something);
+        var yText = d3.select('.yText');
+        console.log("yText:", yText);
+        
+        function yTextRefresh() {
+            yText.attr("transform", `translate(${margin.left}, ${margin.top})rotate(-90)`);
+        };
+        yTextRefresh();
+
+        yText
+            .append('text')
+            .text('Obese (%)')
+            .attr('y',-26)
+            .attr('data-name','obesity')
+            .attr('data-axis','y')
+            .attr('class','aText active y');
+        yText
+            .append('text')
+            .text('Smokes (%)')
+            .attr('y',0)
+            .attr('data-name','smokes')
+            .attr('data-axis','y')
+            .attr('class','aText inactive y');
+        yText
+            .append('text')
+            .text('Lacks healthcare (%)')
+            .attr('y',26)
+            .attr('data-name','healthcare')
+            .attr('data-axis','y')
+            .attr('class','aText inactive y');
+        
+        
+        
     
         // updateToolTip function above csv import
         var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
@@ -207,6 +256,23 @@
                     // Update toolTips with new info
                     circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
     
+                    // Change classes to change bold text
+                    // if (chosenXAxis === "poverty") {
+                    //     povertyLabel
+                    //         .classed("active", true)
+                    //         .classed("inactive", false);
+                    //     ageLabel
+                    //         .classed("active", false)
+                    //         .classed("inactive", true);
+                    // }
+                    // else {
+                    //     povertyLabel
+                    //         .classed("active", false)
+                    //         .classed("inactive", true);
+                    //     ageLabel
+                    //         .classed("active", true)
+                    //         .classed("inactive", false);
+                    // }
                     if (chosenXAxis === "poverty") {
                         povertyLabel
                             .classed("active", true)

@@ -67,11 +67,20 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 function updateToolTip(chosenXAxis, circlesGroup) {
     var label;
 
+    // if (chosenXAxis === "poverty") {
+    //     label = "Poverty:";
+    // }
+    // else {
+    //     label = "Age:";
+    // }
     if (chosenXAxis === "poverty") {
         label = "Poverty:";
     }
-    else {
+    else if (chosenXAxis === "age") {
         label = "Age:";
+    }
+    else {
+        label = "Income:";
     }
 
     var toolTip = d3.tip()
@@ -101,6 +110,7 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
         data.age = +data.age;
+        data.income = +data.income;
     });
 
     // xLinearScale function above csv import
@@ -141,7 +151,7 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
         //     return(`${d.abbr}`);
         // });
 
-    // Create group for 2 x-axis labels
+    // Create group for 3 x-axis labels
     var labelsGroup = chartGroup.append("g")
         .attr("transform", `translate(${width / 2}, ${height + margin.top})`);
 
@@ -158,6 +168,13 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
         .attr("y", 0)
         .attr("value", "age") // value to grab for event listener
         .text("Age (Median)");
+
+    var incomeLabel = labelsGroup.append("text")
+        .attr("class", "aText inactive")
+        .attr("x", 150)
+        .attr("y", 0)
+        .attr("value", "income") // value to grab for event listener
+        .text("Household Income (Median");
 
     // Append the y-axis
     chartGroup.append("text")
@@ -195,11 +212,41 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
                 circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
                 // Change classes to change bold text
+                // if (chosenXAxis === "poverty") {
+                //     povertyLabel
+                //         .classed("active", true)
+                //         .classed("inactive", false);
+                //     ageLabel
+                //         .classed("active", false)
+                //         .classed("inactive", true);
+                // }
+                // else {
+                //     povertyLabel
+                //         .classed("active", false)
+                //         .classed("inactive", true);
+                //     ageLabel
+                //         .classed("active", true)
+                //         .classed("inactive", false);
+                // }
                 if (chosenXAxis === "poverty") {
                     povertyLabel
                         .classed("active", true)
                         .classed("inactive", false);
                     ageLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    incomeLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                }
+                else if (chosenXAxis === "age") {
+                    povertyLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    ageLabel
+                        .classed("active", true)
+                        .classed("inactive", false);
+                    incomeLabel
                         .classed("active", false)
                         .classed("inactive", true);
                 }
@@ -208,9 +255,12 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
                         .classed("active", false)
                         .classed("inactive", true);
                     ageLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    incomeLabel
                         .classed("active", true)
                         .classed("inactive", false);
-                }
+                }                                
             }
         });    
     }).catch(function(error) {

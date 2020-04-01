@@ -134,15 +134,13 @@
     
         // Append x-axis  
         var xAxis = chartGroup.append("g")
-            .classed("x-axis", true)
             .attr("transform", `translate(0, ${height})`)
             .call(bottomAxis);
-            console.log("xAxis:", xAxis);
-    
+                
         // Append y-axis 
         chartGroup.append("g")
             .call(leftAxis);
-    
+            
         // Append initial circles
         var circlesGroup = chartGroup.selectAll("circle")
             .data(popData)
@@ -159,31 +157,62 @@
             // .html(function(d) {
             //     return(`${d.abbr}`);
             // });
-    
-        // Create group for 3 x-axis labels
-        var labelsGroup = chartGroup.append("g")
-            .attr("transform", `translate(${width / 2}, ${height + margin.top})`);
-    
-        var povertyLabel = labelsGroup.append("text")
-            .attr("class", "aText active")
+
+        svg.append("g").attr("class", "xText");
+        var xText = d3.select(".xText")
+        
+        function xTextRefresh() {
+            xText.attr("transform", `translate(${width / 2}, ${height + margin.top})`);
+        }
+        xTextRefresh();
+
+        //Poverty Label
+        var povertyLabel = xText.append("text")
+            .text("In Poverty (%)")
             .attr("x", 0)
             .attr("y", -20)
-            .attr("value", "poverty") // value to grab for event listener
-            .text("In Poverty (%)");
-    
-        var ageLabel = labelsGroup.append("text")
-            .attr("class", "aText inactive")
+            .attr("class", "aText active")
+            .attr("value", "poverty"); // value to grab for event listener
+
+        var ageLabel = xText.append("text")
+            .text("Age (Median)")  
             .attr("x", 0)
-            .attr("y", 0)
-            .attr("value", "age") // value to grab for event listener
-            .text("Age (Median)");
-    
-        var incomeLabel = labelsGroup.append("text")
+            .attr("y", 0) 
             .attr("class", "aText inactive")
-            .attr("x", 150)
-            .attr("y", 0)
-            .attr("value", "income") // value to grab for event listener
-            .text("Household Income (Median");
+            .attr("value", "age"); 
+            
+        var incomeLabel = xText.append("text")
+            .text("Household Income (medium)")  
+            .attr("x", 0)
+            .attr("y", 20) 
+            .attr("class", "aText inactive")
+            .attr("value", "income");
+            
+    
+        // Create group for 3 x-axis labels
+        // var labelsGroup = chartGroup.append("g")
+        //     .attr("transform", `translate(${width / 2}, ${height + margin.top})`);
+    
+        // var povertyLabel = labelsGroup.append("text")
+        //     .attr("class", "aText active")
+        //     .attr("x", 0)
+        //     .attr("y", -20)
+        //     .attr("value", "poverty") // value to grab for event listener
+        //     .text("In Poverty (%)");
+    
+        // var ageLabel = labelsGroup.append("text")
+        //     .attr("class", "aText inactive")
+        //     .attr("x", 0)
+        //     .attr("y", 0)
+        //     .attr("value", "age") // value to grab for event listener
+        //     .text("Age (Median)");
+    
+        // var incomeLabel = labelsGroup.append("text")
+        //     .attr("class", "aText inactive")
+        //     .attr("x", 150)
+        //     .attr("y", 0)
+        //     .attr("value", "income") // value to grab for event listener
+        //     .text("Household Income (Median");
     
         // Append the y-axis
         // chartGroup.append("text")
@@ -194,32 +223,32 @@
         //         .attr("class", "aText")
         //         .text("Lacks Healthcare (%)");
 
-
-        var something = svg.append('g').attr('class','yText');
-        console.log("something:", something);
-        var yText = d3.select('.yText');
-        console.log("yText:", yText);
+        // Append y-axis group to svg area
+        svg.append('g').attr('class','y-axis');
+        
+        var yAxis = d3.select('.y-axis');
+        console.log("yAxis:", yAxis);
         
         function yTextRefresh() {
-            yText.attr("transform", `translate(${margin.left}, ${margin.top})rotate(-90)`);
+            yAxis.attr("transform", `translate(${margin.left}, ${margin.top})rotate(-90)`);
         };
         yTextRefresh();
 
-        yText
+        yAxis
             .append('text')
             .text('Obese (%)')
             .attr('y',-26)
             .attr('data-name','obesity')
             .attr('data-axis','y')
             .attr('class','aText active y');
-        yText
+        yAxis
             .append('text')
             .text('Smokes (%)')
             .attr('y',0)
             .attr('data-name','smokes')
             .attr('data-axis','y')
             .attr('class','aText inactive y');
-        yText
+        yAxis
             .append('text')
             .text('Lacks healthcare (%)')
             .attr('y',26)
@@ -234,7 +263,8 @@
         var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
     
         // X-axis labels event listener
-        labelsGroup.selectAll("text")
+        //labelsGroup was where xText is on line below
+        xText.selectAll("text")
             .on("click", function() {
                 // Get values of selection
                 var value = d3.select(this).attr("value");

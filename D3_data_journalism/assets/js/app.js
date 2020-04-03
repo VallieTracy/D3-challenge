@@ -1,3 +1,18 @@
+// var width = parseInt(d3.select("#scatter").style("width"));
+// var height = width - width / 3.9;
+// var margin = 20;
+// var labelArea = 110;
+// var tPadBot = 40;
+// var tPadLeft = 40;
+// var svg = d3
+//     .select("#scatter")
+//     .append("svg")
+//     .attr("width", width)
+//     .attr("height", height)
+//     .attr("class", "chart")
+//     .style("background", "blue")
+
+
 var svgWidth = window.innerWidth;
 var svgHeight = window.innerHeight;
 var margin = {
@@ -70,14 +85,6 @@ function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYA
         .attr("cx", d => newXScale(d[chosenXAxis]))
         .attr("cy", d => newYScale(d[chosenYAxis]));
     return circlesGroup;
-}
-
-function renderAbbrText(circlesText, newXScale, newYScale, chosenXAxis, chosenYAxis) { /////////////////////////////////////////////////
-  circlesText.transition()
-    .duration(1000)
-    .attr("dx", d => newXScale(d[chosenXAxis]) - 5)
-    .attr("dy", d => newYScale(d[chosenYAxis]) + 3);
-  return circlesText;
 }
 
 // Function to update the tool tip
@@ -183,17 +190,6 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
         .attr("class", "stateCircle stateText")
         .attr("opacity", ".5");
 
-    // State abbreviation text
-    var abbrText = chartGroup.selectAll("text") /////////////////////////////////////////////////////////////////
-    .data(popData)
-    .enter()
-    .append("text")
-    .attr("cx", d => xLinearScale(d[chosenXAxis]) - 5)
-    .attr("cy", d => yLinearScale(d[chosenYAxis]) + 3)
-    .text(function(data) { return data.abbr })
-    .attr("class", "stateCircle stateText");
-
-            
     // Add a group with class xText to svg area
     svg.append("g").attr("class", "xText");
     
@@ -267,7 +263,6 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
                 xAxis = renderXAxis(xLinearScale, xAxis);
                 // Update circles with new x values
                 circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
-                abbrText = renderAbbrText(abbrText, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis); /////////////////////////////////
                 // Update toolTips with new info
                 circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
                 // Change active text to bold
@@ -321,7 +316,6 @@ d3.csv("assets/data/data.csv").then(function(popData, err) {
                 yAxis = renderYAxis(yLinearScale, yAxis);
                 // Update circles with new x values
                 circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
-                abbrText = renderAbbrText(abbrText, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);           //////////////////////////////
                 // Update toolTips with new info
                 circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
                 // Change active text to bold

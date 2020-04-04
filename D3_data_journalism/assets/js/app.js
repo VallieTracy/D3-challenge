@@ -2,6 +2,7 @@
 // into functions.  After many hours of trying, both solo and with people, decided to manhandle the sizing aspects.
 // Something to look into.
 
+
 var svgWidth = 960;
 var svgHeight = 500;
 var margin = {
